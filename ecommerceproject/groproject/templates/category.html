@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{%  block metadescription %}
+            {% if category %}
+            {{category.description|truncatewords:155}}
+            {% endif %}
+{% endblock %}
+{% block title %}
+            {% if category %}
+            {{category.title}}
+            {% endif %}
+{% endblock %}
+{% block content %}
+            {% if category %}
+            <div>
+                <div class="row my_row_class">
+                    <div class="mx_auto">
+                    <a href="{% url 'shop:allProdCat' %}"></a>
+                </div>
+                    </div>
+            </div>
+            {% endif %}
+            <div class="mx_auto">
+                {% if category %}
+                <img src="{{category.image.url}}" width="1500" height="500" alt="{{category.name}}">
+            </div>
+            <br>
+            <div>
+                <h1 class="text-center my_title">{{category.name}}</h1>
+                <p class="text-justify">{{category.description}}</p>
+            </div>
+            {% else %}
+            <div>
+            <center > <img  class="my_image_padding" src="{% static 'image/banner.png' %}" width="1400" height="1000" alt="our product"></center>
+            </div>
+            <br>
+            <div>
+                <h1 class="text-center my_title">Our Product Collections</h1>
+                <p class="text-justify">A grocery store (AE), grocery shop (BE) or simply grocery is a foodservice retail store that primarily retails a general range of food products, which may be fresh or packaged. In everyday U.S. usage, however, "grocery store" is a synonym for supermarket,and is not used to refer to other types of stores that sell groceries. In the UK, shops that sell food are distinguished as grocers or grocery shops (though in everyday use, people usually use either the term "supermarket" or a "corner shop" or "convenience store").</p>
+            </div>
+            {% endif %}
+            <div class="container">
+                <div class="row mx_auto">
+                    {% for product in products.object_list %}
+                    <div class ="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
+                        <div class="card text-center" style="min-width:18rem;">
+                            <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" width="100"  height="300" alt="{{product.name}}"></a>
+                            <div class="card-body">
+                                <h2>{{product.name}}</h2>
+                                <p>{{product.price}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mx_auto">
+                    {% if products.paginator.num_pages > 1 %}
+
+                    <hr>
+                    <div class="text-center">
+                        {% for pg in products.paginator.page_range %}
+                             <a href="?page={{pg}}" class="btn btn-light btn-lg {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <br>
+            </div>
+{% endblock %}
